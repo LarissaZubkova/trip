@@ -5,16 +5,17 @@ import {render} from '../render.js';
 
 export default class BoardPresenter {
   listComponent = new TripListView();
-  pointComponent = new NewPointView();
 
-  init = (listConntainer) => {
+  init = (listConntainer, pointsModel) => {
     this.listConntainer = listConntainer;
+    this.pointsModel = pointsModel;
+    this.listPoints = [...this.pointsModel.getPoints()];
 
     render (this.listComponent, this.listConntainer);
-    render (this.pointComponent, this.listComponent.getElement());
+    render (new NewPointView(this.listPoints), this.listComponent.getElement());
 
-    for (let i = 0; i < 3; i++) {
-      render(new TripItemView(), this.listComponent.getElement());
+    for (let i = 0; i < this.listPoints.length; i++) {
+      render(new TripItemView(this.listPoints[i]), this.listComponent.getElement());
     }
   };
 }

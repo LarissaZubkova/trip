@@ -1,9 +1,20 @@
 import {createElement} from '../render.js';
 
-const createNewPointView = () => `<li class="trip-events__item">
-<form class="event event--edit" action="#" method="post">
-  <header class="event__header">
-    <div class="event__type-wrapper">
+const createNewPointView = (point = {}) => {
+  const {
+    basePrice = '',
+    dateFrom = '',
+    dateTo = '',
+    destination = {},
+    isFavorite = false,
+    offers = [],
+    type ='',
+  } = point;
+  return (
+    `<li class="trip-events__item">
+     <form class="event event--edit" action="#" method="post">
+     <header class="event__header">
+     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
         <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
@@ -161,11 +172,16 @@ const createNewPointView = () => `<li class="trip-events__item">
     </section>
   </section>
 </form>
-</li>`;
+</li>`);
+};
 
 export default class NewPointView {
+  constructor(point) {
+    this.point = point;
+  }
+
   getTemplate() {
-    return createNewPointView();
+    return createNewPointView(this.point);
   }
 
   getElement() {

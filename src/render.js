@@ -16,8 +16,4 @@ const render = (component, container, place = RenderPosition.BEFOREEND) => {
   container.insertAdjacentElement(place, component.getElement());
 };
 
-const getRanderInteger = () => {
-
-};
-
-export {RenderPosition, createElement, render, getRanderInteger};
+export {RenderPosition, createElement, render};
