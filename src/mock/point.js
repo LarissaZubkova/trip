@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {getRandomInteger} from '../utils';
 
 const generateDescription = () => {
@@ -46,21 +47,41 @@ const generateDestination = () => ({
   ]
 });
 
-// const generateOffers = () => ({
-//   id: 1,
-//   title: 'Upgrade to a business class',
-//   price: 120
-// });
+const generateFromToDates = () => {
+  const maxGap = 14;
+  const fromDate = dayjs()
+    .add(getRandomInteger(-maxGap, maxGap), 'day')
+    .add(getRandomInteger(-maxGap, maxGap), 'hour')
+    .add(getRandomInteger(-maxGap, maxGap), 'minute');
+  const toDate = fromDate
+    .clone()
+    .add(getRandomInteger(0, 14), 'day')
+    .add(getRandomInteger(0, 59), 'hour')
+    .add(getRandomInteger(0, 59), 'minute');
+  return {
+    from: fromDate.toISOString(),
+    to: toDate.toISOString()
+  };
+};
 
-export const generatePoint = () => ({
-  basePrice: 1100,
-  dateFrom: '2019-07-10T22:55:56.845Z',
-  dateTo: '2019-07-11T11:22:13.375Z',
-  destination: generateDestination(),
-  id: '0',
-  isFavorite: false,
-  offers: 1, //$Array<Offer.id>$,
-  type: generateType(),
-});
+const generatePrice = () => getRandomInteger(1, 100) * 10;
+
+export const generatePoint = (id) => {
+  const dates = generateFromToDates();
+  const basePrice = generatePrice();
+  const offersGroup = Array.from({length:getRandomInteger(1, 4)}, (i, j) => getRandomInteger(j + 1));
+  const offers = new Set(offersGroup);
+
+  return {
+    basePrice,
+    dateFrom: dates.from,
+    dateTo: dates.to,
+    destination: generateDestination(),
+    id,
+    isFavorite: Boolean(getRandomInteger(0,1)),
+    offers: [...offers],
+    type: generateType(),
+  };
+};
 
 window.console.log(generatePoint());

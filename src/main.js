@@ -10,6 +10,8 @@ const tripEventsElement = document.querySelector('.trip-events');
 const pointsModel = new PointsModel();
 const boardPresenter = new BoardPresenter();
 
+console.log(pointsModel);
+
 render(new ListFilterView(), tripFiltersElement);
 render(new ListSortView(), tripEventsElement);
 

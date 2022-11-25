@@ -1,21 +1,30 @@
 import {createElement} from '../render.js';
-import {humanizeTaskDueDate, humanizeTaskDueTime} from '../utils.js';
+import {humanizeDueDate, humanizeDueTime} from '../utils.js';
 
-const createTripItemView = (point) => {
-  const {destination, basePrice, offers, dateFrom, dateTo} = point;
-
+const createTripItemView = (point, offersModel) => {
+  const {destination, basePrice, offers, dateFrom, dateTo, type} = point;
   const date = dateFrom !== null
-    ? humanizeTaskDueDate(dateFrom)
+    ? humanizeDueDate(dateFrom)
     : '';
 
   const timeFrom = dateFrom !== null
-    ? humanizeTaskDueTime(dateFrom)
+    ? humanizeDueTime(dateFrom)
     : '';
 
   const timeTo = dateFrom !== null
-    ? humanizeTaskDueTime(dateTo)
+    ? humanizeDueTime(dateTo)
     : '';
 
+  const cteateOffers = () => {
+    const carrentOffers = offers.map((id) => offersModel.offers.find((offer) => id === offer.id));
+    return carrentOffers.map((offer) => offer !== undefined ?
+      `<li class="event__offer">
+       <span class="event__offer-title">${offer.title}</span>
+       &plus;&euro;&nbsp;
+       <span class="event__offer-price">${offer.price}</span>
+     </li>` : '').join('');
+
+  };
 
   return (
     `<li class="trip-events__item">
@@ -24,7 +33,7 @@ const createTripItemView = (point) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="${destination.pictures[0].src}" alt="Event type icon">
       </div>
-      <h3 class="event__title">Taxi Amsterdam</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${dateFrom}">${timeFrom}</time>
@@ -36,13 +45,7 @@ const createTripItemView = (point) => {
         &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
-      <ul class="event__selected-offers">
-        <li class="event__offer">
-          <span class="event__offer-title">${offers.title}</span>
-          &plus;&euro;&nbsp;
-          <span class="event__offer-price">${offers.price}</span>
-        </li>
-      </ul>
+      <ul class="event__selected-offers">${cteateOffers()}</ul>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
@@ -50,22 +53,27 @@ const createTripItemView = (point) => {
     </li>`);
 };
 export default class TripItemView {
-  constructor(point) {
-    this.task = point;
+  #element = null;
+  #point = null;
+  #offers = null;
+
+  constructor(point, offers) {
+    this.#point = point;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createTripItemView(this.task);
+  get template() {
+    return createTripItemView(this.#point, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

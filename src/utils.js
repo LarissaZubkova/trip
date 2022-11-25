@@ -7,8 +7,15 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const humanizeTaskDueDate = (dateFrom) => dayjs(dateFrom).format('MMM YY');
+const getRandomElement = (elements) => {
+  const randomIndex = getRandomInteger(0, elements.length - 1);
+  return elements[randomIndex];
+};
 
-const humanizeTaskDueTime = (date) => dayjs(date).format('hh:mm');
+const humanizeDueDate = (dateFrom) => dayjs(dateFrom).format('MMM DD');
 
-export {getRandomInteger, humanizeTaskDueDate, humanizeTaskDueTime};
+const humanizeFormDueDate = (date) => dayjs(date).format('YY/MM/DD hh:mm');
+
+const humanizeDueTime = (date) => dayjs(date).format('hh:mm');
+
+export {getRandomInteger, getRandomElement, humanizeDueDate, humanizeDueTime, humanizeFormDueDate};
