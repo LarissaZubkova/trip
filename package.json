@@ -27,9 +27,9 @@
     "webpack-dev-server": "4.9.3"
   },
   "engines": {
-    "node": "18"
+    "node": "16"
   },
   "dependencies": {
-    "dayjs": "1.11.3"
+    "dayjs": "1.11.1"
   }
 }

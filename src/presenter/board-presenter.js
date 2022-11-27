@@ -1,28 +1,36 @@
 import TripListView from '../view/trip-list-view.js';
 import NewPointView from '../view/new-point-view.js';
 import TripItemView from '../view/trip-item-view.js';
+import ListEmptysView from '../view/list-empty-view.js';
 import {render} from '../render.js';
 
 export default class BoardPresenter {
   #listContainer = null;
   #pointsModel = null;
-
   #listComponent = new TripListView();
   #listPoints = [];
   #listOffers = [];
 
-  init = (listContainer, pointsModel) => {
+  constructor(listContainer, pointsModel) {
     this.#listContainer = listContainer;
     this.#pointsModel = pointsModel;
+  }
+
+  init = () => {
     this.#listPoints = [...this.#pointsModel.points];
     this.#listOffers = [...this.#pointsModel.offers];
 
-    render (this.#listComponent, this.#listContainer);
-    //render (new NewPointView(this.#listPoints[0], this.#listOffers[0]), this.#listComponent.element);
+    this.#renderList();
+  };
 
+  #renderList = () => {
+    render (this.#listComponent, this.#listContainer);
+    if (this.#listPoints.length === 0) {
+      this.#listContainer.querySelector('form').remove();
+      return render(new ListEmptysView, this.#listContainer);
+    }
     for (let i = 0; i < this.#listPoints.length; i++) {
       this.#renderPoint(this.#listPoints[i], this.#listOffers[i]);
-      //render(new TripItemView(this.#listPoints[i], this.#listOffers[i]), this.#listComponent.element);
     }
   };
 
