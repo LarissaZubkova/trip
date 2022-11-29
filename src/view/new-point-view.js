@@ -1,27 +1,27 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizeFormDueDate} from '../utils.js';
 
-const createNewPointView = (point = {}, offersModel) => {
-  const {
-    basePrice = '',
-    dateFrom = '',
-    dateTo = '',
-    destination = {},
-    offers = [],
-    //isFavorite = false,
-    type = '',
-  } = point;
+const BLANK_POINT = {
+  basePrice: '',
+  dateFrom: '',
+  dateTo: '',
+  destination: {},
+  offers: [],
+  //isFavorite = false,
+  type: '',
+};
 
-  const dateFromForm = dateFrom !== null
-    ? humanizeFormDueDate(dateFrom)
+const createNewPointView = (point, offersModel) => {
+  const dateFromForm = point.dateFrom !== null
+    ? humanizeFormDueDate(point.dateFrom)
     : '';
 
-  const dateToForm = dateTo !== null
-    ? humanizeFormDueDate(dateTo)
+  const dateToForm = point.dateTo !== null
+    ? humanizeFormDueDate(point.dateTo)
     : '';
 
   const createOffers = () => offersModel.offers.map((offer) => {
-    const checked = offers.includes(offer.id) ? 'checked' : '';
+    const checked = point.offers.includes(offer.id) ? 'checked' : '';
 
     return `
     <div class="event__offer-selector">
@@ -41,7 +41,7 @@ const createNewPointView = (point = {}, offersModel) => {
      <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
-        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${point.type}.png" alt="Event type icon">
       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -122,7 +122,7 @@ const createNewPointView = (point = {}, offersModel) => {
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${point.basePrice}">
     </div>
 
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -139,7 +139,7 @@ const createNewPointView = (point = {}, offersModel) => {
 
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${destination.description}</p>
+      <p class="event__destination-description">${point.destination.description}</p>
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
@@ -156,28 +156,17 @@ const createNewPointView = (point = {}, offersModel) => {
 </li>`);
 };
 
-export default class NewPointView {
-  #element = null;
+export default class NewPointView extends AbstractView {
   #point = null;
   #offers = null;
 
-  constructor(point, offers) {
+  constructor(point = BLANK_POINT, offers) {
+    super();
     this.#point = point;
     this.#offers = offers;
   }
 
   get template() {
     return createNewPointView(this.#point, this.#offers);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

@@ -1,6 +1,6 @@
+import {render} from './framework/render.js';
 import ListFilterView from './view/list-filter-view.js';
 import ListSortView from './view/list-sort-view.js';
-import {render} from './render.js';
 import BoardPresenter from './presenter/board-presenter.js';
 import PointsModel from './model/points-model.js';
 

@@ -1,9 +1,8 @@
+import {render} from '../framework/render.js';
 import TripListView from '../view/trip-list-view.js';
 import NewPointView from '../view/new-point-view.js';
 import TripItemView from '../view/trip-item-view.js';
 import ListEmptysView from '../view/list-empty-view.js';
-import {render} from '../render.js';
-
 export default class BoardPresenter {
   #listContainer = null;
   #pointsModel = null;

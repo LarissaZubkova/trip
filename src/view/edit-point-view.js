@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createEditPointView = () => `<form class="event event--edit" action="#" method="post">
 <header class="event__header">
@@ -154,21 +154,8 @@ const createEditPointView = () => `<form class="event event--edit" action="#" me
 </section>
 </form>`;
 
-export default class EditPointView {
-  #element = null;
-
+export default class EditPointView extends AbstractView {
   get template() {
     return createEditPointView();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
