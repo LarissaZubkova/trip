@@ -1,4 +1,4 @@
-import {render} from '../framework/render.js';
+import {render, replace} from '../framework/render.js';
 import TripListView from '../view/trip-list-view.js';
 import NewPointView from '../view/new-point-view.js';
 import TripItemView from '../view/trip-item-view.js';
@@ -38,11 +38,11 @@ export default class BoardPresenter {
     const newPointComponent = new NewPointView(point, offers);
 
     const replacePointToForm = () => {
-      this.#listComponent.element.replaceChild(newPointComponent.element, pointComponent.element);
+      replace(newPointComponent, pointComponent);
     };
 
     const replaceFormToPoint = () => {
-      this.#listComponent.element.replaceChild(pointComponent.element, newPointComponent.element);
+      replace(pointComponent, newPointComponent);
     };
 
     const onEscKeyDown = (evt) => {
@@ -53,13 +53,12 @@ export default class BoardPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click',() => {
+    pointComponent.setEditClickHandler(() => {
       replacePointToForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    newPointComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
+    newPointComponent.setFormSubmitHandler(() => {
       replaceFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });

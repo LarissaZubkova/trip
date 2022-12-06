@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomElement} from '../utils.js';
+import {getRandomInteger, getRandomElement} from '../utils/utils.js';
 import {POINT_TYPES} from './consts.js';
 
 const OFFER_TITLES = [

@@ -10,4 +10,10 @@ const POINT_TYPES = [
   'restaurant',
 ];
 
-export {POINT_TYPES};
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past'
+};
+
+export {POINT_TYPES, FilterType};

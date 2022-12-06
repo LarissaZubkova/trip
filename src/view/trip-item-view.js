@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizeDueDate, humanizeDueTime} from '../utils.js';
+import {humanizeDueDate, humanizeDueTime} from '../utils/utils.js';
 
 const createTripItemView = (point, offersModel) => {
   const {destination, basePrice, offers, dateFrom, dateTo, type} = point;
@@ -65,4 +65,14 @@ export default class TripItemView extends AbstractView {
   get template() {
     return createTripItemView(this.#point, this.#offers);
   }
+
+  setEditClickHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+  };
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
+  };
 }
