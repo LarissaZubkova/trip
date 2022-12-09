@@ -1,8 +1,9 @@
-import {render, replace} from '../framework/render.js';
+import {render} from '../framework/render.js';
 import TripListView from '../view/trip-list-view.js';
-import NewPointView from '../view/new-point-view.js';
-import TripItemView from '../view/trip-item-view.js';
+// import NewPointView from '../view/new-point-view.js';
+// import TripItemView from '../view/trip-item-view.js';
 import ListEmptysView from '../view/list-empty-view.js';
+import PointPresenter from './point-presenter.js';
 export default class BoardPresenter {
   #listContainer = null;
   #pointsModel = null;
@@ -34,34 +35,36 @@ export default class BoardPresenter {
   };
 
   #renderPoint = (point, offers) => {
-    const pointComponent = new TripItemView(point, offers);
-    const newPointComponent = new NewPointView(point, offers);
+    // const pointComponent = new TripItemView(point, offers);
+    // const newPointComponent = new NewPointView(point, offers);
 
-    const replacePointToForm = () => {
-      replace(newPointComponent, pointComponent);
-    };
+    // const replacePointToForm = () => {
+    //   replace(newPointComponent, pointComponent);
+    // };
 
-    const replaceFormToPoint = () => {
-      replace(pointComponent, newPointComponent);
-    };
+    // const replaceFormToPoint = () => {
+    //   replace(pointComponent, newPointComponent);
+    // };
 
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
+    // const onEscKeyDown = (evt) => {
+    //   if (evt.key === 'Escape' || evt.key === 'Esc') {
+    //     evt.preventDefault();
+    //     replaceFormToPoint();
+    //     document.removeEventListener('keydown', onEscKeyDown);
+    //   }
+    // };
 
-    pointComponent.setEditClickHandler(() => {
-      replacePointToForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
+    // pointComponent.setEditClickHandler(() => {
+    //   replacePointToForm();
+    //   document.addEventListener('keydown', onEscKeyDown);
+    // });
 
-    newPointComponent.setFormSubmitHandler(() => {
-      replaceFormToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-    render (pointComponent, this.#listComponent.element);
+    // newPointComponent.setFormSubmitHandler(() => {
+    //   replaceFormToPoint();
+    //   document.removeEventListener('keydown', onEscKeyDown);
+    // });
+    // render (pointComponent, this.#listComponent.element);
+    const pointPresenter = new PointPresenter(this.#listComponent.element);
+    pointPresenter.init(point, offers);
   };
 }
