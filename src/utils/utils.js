@@ -18,4 +18,10 @@ const humanizeFormDueDate = (date) => dayjs(date).format('YY/MM/DD hh:mm');
 
 const humanizeDueTime = (date) => dayjs(date).format('hh:mm');
 
-export {getRandomInteger, getRandomElement, humanizeDueDate, humanizeDueTime, humanizeFormDueDate};
+const SortTipe = {
+  DAY: 'day',
+  PRICE: 'price',
+  TIME: 'time',
+};
+
+export {getRandomInteger, getRandomElement, humanizeDueDate, humanizeDueTime, humanizeFormDueDate, SortTipe};

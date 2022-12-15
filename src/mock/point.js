@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {getRandomInteger} from '../utils/utils';
 
 const generateDescription = () => {
@@ -66,7 +67,29 @@ const generateFromToDates = () => {
 
 const generatePrice = () => getRandomInteger(1, 100) * 10;
 
-export const generatePoint = (id) => {
+const getWeightForNullDate = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return 0;
+  }
+
+  if (dateA === null) {
+    return 1;
+  }
+
+  if (dateB === null) {
+    return -1;
+  }
+
+  return null;
+};
+
+export const sortPointDay = (pointA, pointB) => {
+  const weight = getWeightForNullDate(pointA.dateFrom, pointB.dateFrom);
+
+  return weight ?? dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+};
+
+export const generatePoint = () => {
   const dates = generateFromToDates();
   const basePrice = generatePrice();
   const offersGroup = Array.from({length:getRandomInteger(1, 4)}, (i, j) => getRandomInteger(j + 1));
@@ -77,7 +100,7 @@ export const generatePoint = (id) => {
     dateFrom: dates.from,
     dateTo: dates.to,
     destination: generateDestination(),
-    id,
+    id: nanoid(),
     isFavorite: Boolean(getRandomInteger(0,1)),
     offers: [...offers],
     type: generateType(),

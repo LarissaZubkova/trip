@@ -1,9 +1,10 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import {SortTipe} from '../utils/utils.js';
 
 const createListSortView = () => `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
 <div class="trip-sort__item  trip-sort__item--day">
   <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day">
-  <label class="trip-sort__btn" for="sort-day">Day</label>
+  <label class="trip-sort__btn" for="sort-day data-sort-type=${SortTipe.DAY}">Day</label>
 </div>
 
 <div class="trip-sort__item  trip-sort__item--event">
@@ -13,12 +14,12 @@ const createListSortView = () => `<form class="trip-events__trip-sort  trip-sort
 
 <div class="trip-sort__item  trip-sort__item--time">
   <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" disabled>
-  <label class="trip-sort__btn" for="sort-time">Time</label>
+  <label class="trip-sort__btn" for="sort-time data-sort-type=${SortTipe.TIME}">Time</label>
 </div>
 
 <div class="trip-sort__item  trip-sort__item--price">
   <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" checked>
-  <label class="trip-sort__btn" for="sort-price">Price</label>
+  <label class="trip-sort__btn" for="sort-price" data-sort-type=${SortTipe.PRICE}>Price</label>
 </div>
 
 <div class="trip-sort__item  trip-sort__item--offer">
@@ -31,4 +32,18 @@ export default class ListSortView extends AbstractView {
   get template() {
     return createListSortView();
   }
+
+  setSortTypeChangeHandler = (callback) => {
+    this._callback.sortTypeChange = callback;
+    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+  };
+
+  #sortTypeChangeHandler = (evt) => {
+    if (evt.target.tagName !== 'LABAL') {
+      return;
+    }
+
+    evt.preventDefault();
+    this._callback.sortTypeChange(evt.target.dataset.SortTipe);
+  };
 }
