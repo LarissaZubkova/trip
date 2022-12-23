@@ -4,7 +4,8 @@ import ListEmptysView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
 import ListSortView from '../view/list-sort-view.js';
 import {SortTipe} from '../utils/utils.js';
-import {sortPointDay} from '../mock/point.js';
+import {sortPointDay, sortPointTime, sortPointPrice} from '../mock/point.js';
+
 export default class BoardPresenter {
   #listContainer = null;
   #pointsModel = null;
@@ -22,8 +23,10 @@ export default class BoardPresenter {
   }
 
   init = () => {
-    this.#listPoints = [...this.#pointsModel.points];
+    this.#listPoints = [...this.#pointsModel.points].sort(sortPointDay);
     this.#listOffers = [...this.#pointsModel.offers];
+
+    this.#sourcedBoardPoints = [...this.#pointsModel.points];
 
     this.#renderSort();
     this.#renderList();
@@ -37,20 +40,28 @@ export default class BoardPresenter {
     switch (sortType) {
       case SortTipe.DAY:
         this.#listPoints.sort(sortPointDay);
-        breack;
-        default:
-          this.#listPoints = [...this.#sourcedBoardPoints];
+        break;
+      case SortTipe.TIME:
+        this.#listPoints.sort(sortPointTime);
+        break;
+      case SortTipe.PRICE:
+        this.#listPoints.sort(sortPointPrice);
+        break;
+      default:
+        this.#listPoints = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortType;
-  }
+  };
 
   #handlerSortChange = (sortType) => {
     if (this.#currentSortType === sortType) {
-    return;
-   }
+      return;
+    }
 
     this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderList();
   };
 
   #renderList = () => {

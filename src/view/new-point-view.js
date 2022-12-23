@@ -1,4 +1,5 @@
-import AbstractView from '../framework/view/abstract-view.js';
+//import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/Abstract-Stateful-View.js';
 import {humanizeFormDueDate} from '../utils/utils.js';
 
 const BLANK_POINT = {
@@ -156,18 +157,39 @@ const createNewPointView = (point, offersModel) => {
 </li>`);
 };
 
-export default class NewPointView extends AbstractView {
-  #point = null;
-  #offers = null;
+// export default class NewPointView extends AbstractView {
+//   #point = null;
+//   #offers = null;
 
+//   constructor(point = BLANK_POINT, offers) {
+//     super();
+//     this.#point = point;
+//     this.#offers = offers;
+//   }
+
+//   get template() {
+//     return createNewPointView(this.#point, this.#offers);
+//   }
+
+//   setFormSubmitHandler = (callback) => {
+//     this._callback.formSubmit = callback;
+//     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+//   };
+
+//   #formSubmitHandler = (evt) => {
+//     evt.preventDefault();
+//     this._callback.formSubmit();
+//   };
+// }
+
+export default class NewPointView extends AbstractStatefulView {
   constructor(point = BLANK_POINT, offers) {
     super();
-    this.#point = point;
-    this.#offers = offers;
+    this._state = NewPointView.parsePointToState(point, offers);
   }
 
   get template() {
-    return createNewPointView(this.#point, this.#offers);
+    return createNewPointView(this._state);
   }
 
   setFormSubmitHandler = (callback) => {
@@ -179,4 +201,7 @@ export default class NewPointView extends AbstractView {
     evt.preventDefault();
     this._callback.formSubmit();
   };
+
+  static parsePointToState = (point,offers) => ({...point, offers});
+  //static parseStateToPoint = (state) => ({...state});
 }

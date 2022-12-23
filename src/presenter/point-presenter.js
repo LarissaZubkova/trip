@@ -53,7 +53,7 @@ export default class PointPresenter {
     remove(prevNewPointComponent);
   };
 
-  desrtoy = () => {
+  destroy = () => {
     remove(this.#pointComponent);
     remove(this.#newPointComponent);
   };
