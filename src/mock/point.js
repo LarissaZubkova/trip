@@ -117,4 +117,3 @@ export const generatePoint = () => {
   };
 };
 
-window.console.log(generatePoint());

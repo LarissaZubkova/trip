@@ -13,6 +13,7 @@ const BLANK_POINT = {
 };
 
 const createNewPointView = (point, offersModel) => {
+  console.log(point);
   const dateFromForm = point.dateFrom !== null
     ? humanizeFormDueDate(point.dateFrom)
     : '';
@@ -202,6 +203,6 @@ export default class NewPointView extends AbstractStatefulView {
     this._callback.formSubmit();
   };
 
-  static parsePointToState = (point,offers) => ({...point, offers});
+  static parsePointToState = (point, offers) => ({...point, offers});
   //static parseStateToPoint = (state) => ({...state});
 }

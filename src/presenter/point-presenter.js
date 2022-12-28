@@ -31,6 +31,7 @@ export default class PointPresenter {
 
     this.#pointComponent = new TripItemView(point, offers);
     this.#newPointComponent = new NewPointView(point, offers);
+    console.log(this.#newPointComponent);
 
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
 
